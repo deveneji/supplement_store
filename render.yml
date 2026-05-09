@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: supplement-backend
+    runtime: image
+    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: supplement-backend.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://supplement-frontend.onrender.com
+
+  - type: web
+    name: supplement-frontend
+    runtime: image
+    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    envVars:
+      - key: VITE_API_URL
+        value: https://supplement-backend.onrender.com/api
+
+databases:
+  - name: supplement-db
+    plan: free
+    databaseName: supplement_db
+    user: supplement_user
